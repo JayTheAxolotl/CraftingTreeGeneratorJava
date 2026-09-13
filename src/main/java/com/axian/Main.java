@@ -1,7 +1,6 @@
 package com.axian;
 
-import com.axian.materials.MaterialLists;
-import com.axian.materials.types.BaseMaterial;
+import com.axian.materials.MaterialMaps;
 import com.axian.materials.types.BranchMaterial;
 import com.axian.materials.types.RootMaterial;
 import org.json.JSONObject;
@@ -30,7 +29,8 @@ public class Main {
             JSONTokener json = new JSONTokener(openFile.readAllAsString());
             JSONObject jsonFile = new JSONObject(json);
 
-            MaterialLists.materials.put(
+            MaterialMaps.materials.put(
+                    // .replaceAll is to remove the .json file extension
                     file.getName().replaceAll(".json", ""),
                     new RootMaterial(
                             file.getName().replaceAll(".json", ""),
@@ -50,7 +50,7 @@ public class Main {
             JSONTokener json = new JSONTokener(openFile.readAllAsString());
             JSONObject jsonFile = new JSONObject(json);
 
-            MaterialLists.materials.put(
+            MaterialMaps.materials.put(
                     file.getName().replaceAll(".json", ""),
                     new BranchMaterial(
                             file.getName().replaceAll(".json", ""),
@@ -74,14 +74,14 @@ public class Main {
         }
 
         /*/ DEBUG
-        MaterialLists.materials.forEach((id, material) ->{
+        MaterialMaps.materials.forEach((id, material) ->{
             IO.println(material.getId() + ", " + material.getClass());
         });
          /**/
 
-        IO.println("\n");
+        IO.println("");
 
-        MaterialLists.materials.get("stone_pickaxe").printTree();
+        MaterialMaps.materials.get("stone_pickaxe").printTree();
 
     }
 }

@@ -15,8 +15,12 @@ public abstract class BaseMaterial {
         return id;
     }
 
-    public float GetCraftedAmount(){
+    public float getCraftedAmount(){
         return craftedAmount;
+    }
+
+    public String getReadableName() {
+        return readableName;
     }
 
     public void printTree(int depth, float used) {}
@@ -29,7 +33,4 @@ public abstract class BaseMaterial {
         printTree(0, 1f);
     }
 
-    public String getReadableName() {
-        return readableName;
-    }
 }

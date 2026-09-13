@@ -7,7 +7,7 @@ import com.axian.materials.types.RootMaterial;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MaterialLists {
+public class MaterialMaps {
     public static Map<RootMaterial, Float> rootMaterialUsages = new HashMap<>();
     public static Map<BranchMaterial, Float> branchMaterialUsages = new HashMap<>();
 
