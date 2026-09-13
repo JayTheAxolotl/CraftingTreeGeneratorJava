@@ -1,0 +1,7 @@
+{
+  "name": "Stick",
+  "crafted_amount": 4,
+  "ingredients": {
+    "oak_plank": 2
+  }
+}
