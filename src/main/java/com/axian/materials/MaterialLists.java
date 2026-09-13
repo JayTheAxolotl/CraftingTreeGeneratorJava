@@ -1,14 +1,15 @@
 package com.axian.materials;
 
+import com.axian.materials.types.BaseMaterial;
 import com.axian.materials.types.BranchMaterial;
 import com.axian.materials.types.RootMaterial;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MaterialLists {
-    public static Map<RootMaterial, Float> rootMaterials = new HashMap<>();
-    public static List<BranchMaterial> branchMaterials = new ArrayList<>();
+    public static Map<RootMaterial, Float> rootMaterialUsages = new HashMap<>();
+    public static Map<BranchMaterial, Float> branchMaterialUsages = new HashMap<>();
+
+    public static Map<String, BaseMaterial> materials = new HashMap<>();
 }

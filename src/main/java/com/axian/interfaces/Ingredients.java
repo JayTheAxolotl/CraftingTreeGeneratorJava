@@ -5,5 +5,5 @@ import com.axian.materials.types.BaseMaterial;
 import java.util.Map;
 
 public interface Ingredients {
-    public Map<BaseMaterial, Float> setIngredients();
+    public Map<String, Float> setIngredients();
 }

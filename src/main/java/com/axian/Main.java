@@ -1,96 +1,87 @@
 package com.axian;
 
+import com.axian.materials.MaterialLists;
 import com.axian.materials.types.BaseMaterial;
 import com.axian.materials.types.BranchMaterial;
 import com.axian.materials.types.RootMaterial;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Main {
 
-    static void main() {
-        // An example of print
-        // IO.println(String.format("Hello and welcome!"));
+    // Folders for the root and branch json files
+    static final File rootsFolder = new File("src/main/resources/materials/root");
+    static final File branchesFolder = new File("src/main/resources/materials/branch");
 
-        RootMaterial oakLog = new RootMaterial("oak_log");
+    static void main() throws IOException {
 
-        RootMaterial cobblestone = new RootMaterial("cobblestone");
+        File[] rootFiles = rootsFolder.listFiles();
+        for (File file : rootFiles) {
 
-        RootMaterial diamond = new RootMaterial("diamond");
+            BufferedReader openFile = new BufferedReader(new FileReader(file));
 
-        RootMaterial ancientDebris = new RootMaterial("ancient_debris");
+            JSONTokener json = new JSONTokener(openFile.readAllAsString());
+            JSONObject jsonFile = new JSONObject(json);
 
-        RootMaterial rawGold = new RootMaterial("raw_gold");
+            MaterialLists.materials.put(
+                    file.getName().replaceAll(".json", ""),
+                    new RootMaterial(
+                            file.getName().replaceAll(".json", ""),
+                            jsonFile.getString("name")
+                    )
+            );
 
-        BranchMaterial oakPlank = new BranchMaterial("oak_plank", 4f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(oakLog, 1f);
-                    return ingredientsBuffer;
-                });
+            openFile.close();
 
-        BranchMaterial stick = new BranchMaterial("stick", 4f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(oakPlank, 2f);
-                    return ingredientsBuffer;
-                });
+        }
 
-        BranchMaterial woodenPickaxe = new BranchMaterial("wooden_pickaxe", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(oakPlank, 3f);
-                    ingredientsBuffer.put(stick, 2f);
-                    return ingredientsBuffer;
-                });
+        File[] branchFiles = branchesFolder.listFiles();
+        for (File file : branchFiles) {
 
-        BranchMaterial stonePickaxe = new BranchMaterial("stone_pickaxe", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(cobblestone, 3f);
-                    ingredientsBuffer.put(stick, 2f);
-                    return ingredientsBuffer;
-                });
+            BufferedReader openFile = new BufferedReader(new FileReader(file));
 
-        BranchMaterial goldIngot = new BranchMaterial("gold_ingot", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(rawGold, 1f);
-                    return ingredientsBuffer;
-                });
+            JSONTokener json = new JSONTokener(openFile.readAllAsString());
+            JSONObject jsonFile = new JSONObject(json);
 
-        BranchMaterial netheriteScrap = new BranchMaterial("netherite_scrap", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(ancientDebris, 1f);
-                    return ingredientsBuffer;
-                });
+            MaterialLists.materials.put(
+                    file.getName().replaceAll(".json", ""),
+                    new BranchMaterial(
+                            file.getName().replaceAll(".json", ""),
+                            jsonFile.getFloat("crafted_amount"),
+                            () -> {
+                                Map<String, Float> ingredientsBuffer = new LinkedHashMap<>();
 
-        BranchMaterial netheriteIngot = new BranchMaterial("netherite_ingot", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(goldIngot, 4f);
-                    ingredientsBuffer.put(netheriteScrap, 4f);
-                    return ingredientsBuffer;
-                });
+                                // Get data from the json file's ingredients key
+                                jsonFile.getJSONObject("ingredients").toMap().forEach((id, amount) -> {
+                                    // Divide by 1f to convert int to float, because it's dumb
+                                    ingredientsBuffer.put(id, (int) amount / 1f);
+                                });
 
-        BranchMaterial diamondPickaxe = new BranchMaterial("diamond_pickaxe", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(diamond, 3f);
-                    ingredientsBuffer.put(stick, 2f);
-                    return ingredientsBuffer;
-                });
+                                return ingredientsBuffer;
+                            },
+                            jsonFile.getString("name"))
+            );
 
-        BranchMaterial netheritePickaxe = new BranchMaterial("netherite_pickaxe", 1f,
-                () -> {
-                    Map<BaseMaterial, Float> ingredientsBuffer = new LinkedHashMap<>();
-                    ingredientsBuffer.put(diamondPickaxe, 1f);
-                    ingredientsBuffer.put(netheriteIngot, 1f);
-                    return ingredientsBuffer;
-                });
+            openFile.close();
 
-        netheritePickaxe.printTree();
+        }
+
+        /*/ DEBUG
+        MaterialLists.materials.forEach((id, material) ->{
+            IO.println(material.getId() + ", " + material.getClass());
+        });
+         /**/
+
+        IO.println("\n");
+
+        MaterialLists.materials.get("stone_pickaxe").printTree();
+
     }
 }

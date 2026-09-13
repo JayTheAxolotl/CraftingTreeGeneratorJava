@@ -1,0 +1,8 @@
+{
+  "name": "Stone Pickaxe",
+  "crafted_amount": 1,
+  "ingredients": {
+    "stick": 2,
+    "cobblestone": 3
+  }
+}

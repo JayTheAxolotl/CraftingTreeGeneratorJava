@@ -4,18 +4,18 @@ import com.axian.materials.MaterialLists;
 
 public class RootMaterial extends BaseMaterial{
 
-    public RootMaterial(String givenId) {
-        super(givenId, 1f);
-        MaterialLists.rootMaterials.put(this, 0f);
+    public RootMaterial(String givenId, String givenReadableName) {
+        super(givenId, 1f, givenReadableName);
+        MaterialLists.rootMaterialUsages.put(this, 0f);
     }
 
     @Override
     public void printTree(int depth, float used){
         String indents = "";
         for(int i = 0; i < depth; i++) {indents = indents + "  ";}
-        IO.println(indents + id + ", " + used);
+        IO.println(indents + readableName + ", " + used);
 
-        MaterialLists.rootMaterials.put(this, used +
-                MaterialLists.rootMaterials.get(this));
+        MaterialLists.rootMaterialUsages.put(this, used +
+                MaterialLists.rootMaterialUsages.get(this));
     }
 }
