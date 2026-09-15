@@ -19,4 +19,19 @@ public class RootMaterial extends BaseMaterial{
         MaterialMaps.rootMaterialUsages.put(this, used +
                 MaterialMaps.rootMaterialUsages.get(this));
     }
+
+    @Override
+    public String getTree(int depth, float used) {
+        String tree = "";
+        String indents = "";
+
+        for(int i = 0; i < depth; i++) {indents = indents + "  ";}
+        tree += "\n" + indents + readableName + ", " + used;
+
+        // Add usages of this material to the usages map
+        MaterialMaps.rootMaterialUsages.put(this, used +
+                MaterialMaps.rootMaterialUsages.get(this));
+
+        return tree;
+    }
 }

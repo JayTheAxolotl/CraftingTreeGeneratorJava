@@ -33,4 +33,16 @@ public abstract class BaseMaterial {
         printTree(0, 1f);
     }
 
+    public String getTree(int depth, float used) {
+        return "You Shouldn't see this";
+    }
+
+    public String getTree(int depth){
+        return getTree(depth, 1f);
+    }
+
+    public String getTree(){
+        return getTree(0, 1f);
+    }
+
 }

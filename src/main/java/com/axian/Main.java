@@ -3,9 +3,11 @@ package com.axian;
 import com.axian.materials.MaterialMaps;
 import com.axian.materials.types.BranchMaterial;
 import com.axian.materials.types.RootMaterial;
+import com.axian.ui.Window;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -77,11 +79,13 @@ public class Main {
         MaterialMaps.materials.forEach((id, material) ->{
             IO.println(material.getId() + ", " + material.getClass());
         });
-         /**/
 
         IO.println("");
-
         MaterialMaps.materials.get("stone_pickaxe").printTree();
+         /**/
+
+        Window window = new Window();
 
     }
+
 }
