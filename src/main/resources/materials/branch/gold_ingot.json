@@ -1,0 +1,7 @@
+{
+  "name": "Gold Ingot",
+  "crafted_amount": 1,
+  "ingredients": {
+    "raw_gold": 1
+  }
+}

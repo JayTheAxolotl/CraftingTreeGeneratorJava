@@ -1,0 +1,7 @@
+{
+  "name": "Netherite Scrap",
+  "crafted_amount": 1,
+  "ingredients": {
+    "ancient_debris": 1
+  }
+}

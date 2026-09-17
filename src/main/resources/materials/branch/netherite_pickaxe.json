@@ -1,0 +1,8 @@
+{
+  "name": "Netherite Pickaxe",
+  "crafted_amount": 1,
+  "ingredients": {
+    "netherite_ingot": 1,
+    "diamond_pickaxe": 1
+  }
+}

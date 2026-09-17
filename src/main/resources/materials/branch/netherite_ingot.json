@@ -1,0 +1,8 @@
+{
+  "name": "Netherite Ingot",
+  "crafted_amount": 1,
+  "ingredients": {
+    "gold_ingot": 4,
+    "netherite_scrap": 4
+  }
+}
