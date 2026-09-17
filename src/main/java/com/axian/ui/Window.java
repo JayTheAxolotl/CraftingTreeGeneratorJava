@@ -12,10 +12,10 @@ import java.util.Map;
 public class Window implements ActionListener {
 
     public JFrame window = new JFrame("Crafting tree generator");
-
-    private JTextArea output = new JTextArea();
     private JPanel bottomPanel = new JPanel(new BorderLayout());
     private JPanel topPanel = new JPanel(new BorderLayout());
+
+    private JTextArea output = new JTextArea();
 
     private Dimension windowSize = new Dimension(1080, 720);
 
@@ -27,7 +27,6 @@ public class Window implements ActionListener {
         // The output area
         output.setText("Click a recipe to see it's tree");
         output.setEditable(false);
-        bottomPanel.add(output, BorderLayout.CENTER);
 
         // Make buttons
         setButtons();
@@ -38,6 +37,12 @@ public class Window implements ActionListener {
 
         window.getContentPane().add(topPanel, BorderLayout.PAGE_START);
         window.getContentPane().add(bottomPanel, BorderLayout.PAGE_END);
+
+        // Make output scrollable
+        JScrollPane scrollPane = new JScrollPane(output);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        bottomPanel.add(scrollPane, BorderLayout.CENTER);
 
         window.setVisible(true);
     }
