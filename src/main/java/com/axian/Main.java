@@ -12,6 +12,7 @@ public class Main {
     // Folders for the root and branch json files
     static final File rootsFolder = new File("src/main/resources/materials/root");
     static final File branchesFolder = new File("src/main/resources/materials/branch");
+    static final File iconsFolder = new File("src/main/resources/textures");
 
     static void main() throws IOException {
 
@@ -19,8 +20,7 @@ public class Main {
 
         BranchMapHandler branchMapHandler = new BranchMapHandler(branchesFolder);
 
-        Window window = new Window();
-
+        Window window = new Window(iconsFolder);
 
         /*/ DEBUG
         MaterialMaps.materials.forEach((id, material) ->{

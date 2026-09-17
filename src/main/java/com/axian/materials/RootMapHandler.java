@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+// Handles creating the map for the root recipes
+
 public class RootMapHandler {
     public RootMapHandler(File rootsFolder) throws IOException {
         File[] rootFiles = rootsFolder.listFiles();
