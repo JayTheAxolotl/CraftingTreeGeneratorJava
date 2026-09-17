@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Map;
 
 public class Window implements ActionListener {
@@ -19,7 +20,11 @@ public class Window implements ActionListener {
 
     private Dimension windowSize = new Dimension(1080, 720);
 
-    public Window() {
+    private final File iconsFolder;
+
+    public Window(File givenIconsFolder) {
+        iconsFolder = givenIconsFolder;
+
         window.setSize(windowSize);
         topPanel.setPreferredSize(new Dimension(windowSize.width, windowSize.height/3));
         bottomPanel.setPreferredSize(new Dimension(windowSize.width, windowSize.height/3));
@@ -48,6 +53,19 @@ public class Window implements ActionListener {
     }
 
     private void setButtons(){
+
+        File[] iconFiles = iconsFolder.listFiles();
+        for (Map.Entry<String, BaseMaterial> entry : MaterialMaps.materials.entrySet()) {
+            for (File file : iconFiles) {
+                if (file.getName().replaceAll("\\..*", "")
+                        .equals(
+                                entry.getValue().getId())) {
+                    Buttons.buttonIcons.put(entry.getValue().getId(), file.getPath());
+                }
+            }
+        }
+
+
         // Use this forEach loop instead of .forEach(()->{}) because I need an iterator (i)
         int buttonXMod = 0;
         int buttonYMod = 0;
@@ -55,20 +73,44 @@ public class Window implements ActionListener {
 
             String id = entry.getValue().getId();
             String name = entry.getValue().getReadableName();
+            int iconScaleTo = 75;
 
-            // Move the buttons down a row if they go off the screen
-            if (buttonXMod + (10 * name.length()) > 1080) {
-                buttonYMod += 60;
-                buttonXMod = 0;
+            if (Buttons.buttonIcons.containsKey(id)) {
+                Image image = Toolkit.getDefaultToolkit().getImage(Buttons.buttonIcons.get(id));
+                ImageIcon icon = new ImageIcon(
+                        image.getScaledInstance(iconScaleTo, iconScaleTo, Image.SCALE_DEFAULT),
+                        "");
+
+                Buttons.buttons.put(id, new JButton(icon));
+
+                // Move the buttons down a row if they would go off the screen
+                if (buttonXMod + iconScaleTo > 1080) {
+                    buttonYMod += iconScaleTo;
+                    buttonXMod = 0;
+                }
+
+                Buttons.buttons.get(id).setBounds(buttonXMod, buttonYMod, iconScaleTo, iconScaleTo);
+                Buttons.buttons.get(id).addActionListener(this);
+
+                topPanel.add(Buttons.buttons.get(id), BorderLayout.CENTER);
+
+                buttonXMod += iconScaleTo;
+
+            }else {
+                Buttons.buttons.put(id, new JButton(name));
+
+                // Move the buttons down a row if they would go off the screen
+                if (buttonXMod + (10 * name.length()) > 1080) {
+                    buttonYMod += iconScaleTo;
+                    buttonXMod = 0;
+                }
+
+                Buttons.buttons.get(id).setBounds(buttonXMod, buttonYMod, 10 * name.length(), iconScaleTo);
+                Buttons.buttons.get(id).addActionListener(this);
+
+                topPanel.add(Buttons.buttons.get(id), BorderLayout.CENTER);
+                buttonXMod += (10 * name.length()); // Set their size/x position relative to each other
             }
-
-            Buttons.buttons.put(id, new JButton(name));
-
-            Buttons.buttons.get(id).setBounds(buttonXMod, buttonYMod, 10 * name.length(), 60);
-            Buttons.buttons.get(id).addActionListener(this);
-
-            topPanel.add(Buttons.buttons.get(id), BorderLayout.CENTER);
-            buttonXMod += (10 * name.length()); // Set their size/ x position relative to each other
         }
     }
 
