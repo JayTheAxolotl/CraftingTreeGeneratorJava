@@ -25,41 +25,49 @@ public class Window implements ActionListener {
     public Window(File givenIconsFolder) {
         iconsFolder = givenIconsFolder;
 
+        // Set size of panels and window
         window.setSize(windowSize);
         topPanel.setPreferredSize(new Dimension(windowSize.width, windowSize.height/3));
         bottomPanel.setPreferredSize(new Dimension(windowSize.width, windowSize.height/3));
 
-        // The output area
-        output.setText("Click a recipe to see it's tree");
-        output.setEditable(false);
+        // init output
+        setOutput();
 
         // Make buttons
         setButtons();
 
-        // A label to ensure the last button added doesn't have a stupid size, because Swing is dumb
-        JLabel fillLabel = new JLabel();
-        topPanel.add(fillLabel, BorderLayout.CENTER);
-
+        // Add panels to window
         window.getContentPane().add(topPanel, BorderLayout.PAGE_START);
         window.getContentPane().add(bottomPanel, BorderLayout.PAGE_END);
+
+        window.setVisible(true);
+    }
+
+    private void setOutput() {
+        output.setText("Click a recipe to see it's tree");
+        output.setEditable(false);
 
         // Make output scrollable
         JScrollPane scrollPane = new JScrollPane(output);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        bottomPanel.add(scrollPane, BorderLayout.CENTER);
 
-        window.setVisible(true);
+        // Add to bottom panel
+        bottomPanel.add(scrollPane, BorderLayout.CENTER);
     }
 
     private void setButtons(){
 
+        int buttonXMod = 0;
+        int buttonYMod = 0;
+
         File[] iconFiles = iconsFolder.listFiles();
         for (Map.Entry<String, BaseMaterial> entry : MaterialMaps.materials.entrySet()) {
             for (File file : iconFiles) {
+                // If the file name is the same as the id of a material
+                // This excludes the extension
                 if (file.getName().replaceAll("\\..*", "")
-                        .equals(
-                                entry.getValue().getId())) {
+                        .equals(entry.getValue().getId())) {
                     Buttons.buttonIcons.put(entry.getValue().getId(), file.getPath());
                 }
             }
@@ -67,15 +75,15 @@ public class Window implements ActionListener {
 
 
         // Use this forEach loop instead of .forEach(()->{}) because I need an iterator (i)
-        int buttonXMod = 0;
-        int buttonYMod = 0;
         for (Map.Entry<String, BaseMaterial> entry : MaterialMaps.materials.entrySet()) {
 
             String id = entry.getValue().getId();
             String name = entry.getValue().getReadableName();
             int iconScaleTo = 75;
 
+            // If the button has a valid icon
             if (Buttons.buttonIcons.containsKey(id)) {
+                // Set and get the icon
                 Image image = Toolkit.getDefaultToolkit().getImage(Buttons.buttonIcons.get(id));
                 ImageIcon icon = new ImageIcon(
                         image.getScaledInstance(iconScaleTo, iconScaleTo, Image.SCALE_DEFAULT),
@@ -90,11 +98,8 @@ public class Window implements ActionListener {
                 }
 
                 Buttons.buttons.get(id).setBounds(buttonXMod, buttonYMod, iconScaleTo, iconScaleTo);
-                Buttons.buttons.get(id).addActionListener(this);
 
-                topPanel.add(Buttons.buttons.get(id), BorderLayout.CENTER);
-
-                buttonXMod += iconScaleTo;
+                buttonXMod += iconScaleTo; // Move the next button over
 
             }else {
                 Buttons.buttons.put(id, new JButton(name));
@@ -106,12 +111,17 @@ public class Window implements ActionListener {
                 }
 
                 Buttons.buttons.get(id).setBounds(buttonXMod, buttonYMod, 10 * name.length(), iconScaleTo);
-                Buttons.buttons.get(id).addActionListener(this);
 
-                topPanel.add(Buttons.buttons.get(id), BorderLayout.CENTER);
                 buttonXMod += (10 * name.length()); // Set their size/x position relative to each other
             }
+
+            Buttons.buttons.get(id).addActionListener(this); // Make button trigger actionPerformed()
+            topPanel.add(Buttons.buttons.get(id), BorderLayout.CENTER); // Add button to panel
+
         }
+
+        // A label to ensure the last button added doesn't have a stupid size, because Swing is dumb
+        topPanel.add(new JLabel(), BorderLayout.CENTER);
     }
 
     // When an action happens (button, checkbox, etc.)

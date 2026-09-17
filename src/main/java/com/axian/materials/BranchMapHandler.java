@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+// Handles creating the map for the branch recipes
+
 public class BranchMapHandler {
     public BranchMapHandler(File branchesFolder) throws IOException {
         File[] branchFiles = branchesFolder.listFiles();
