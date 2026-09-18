@@ -23,7 +23,7 @@ public abstract class BaseMaterial {
         return readableName;
     }
 
-    public void printTree(int depth, float used) {}
+    public void printTree(int depth, float used) { IO.println(getTree(depth, used)); }
 
     public void printTree(int depth){
         printTree(depth, 1f);

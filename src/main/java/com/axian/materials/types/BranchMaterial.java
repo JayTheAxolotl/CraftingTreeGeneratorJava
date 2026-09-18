@@ -22,32 +22,6 @@ public class BranchMaterial extends BaseMaterial{
     }
 
     @Override
-    public void printTree(int depth, float used){
-        String indents = "";
-        for(int i = 0; i < depth; i++) {indents = indents + "  ";}
-        IO.println(indents + readableName + ", " + used);
-
-        ingredients.forEach((ingredientId, amount) -> {
-            BaseMaterial ingredient = MaterialMaps.materials.get(ingredientId);
-            ingredient.printTree(depth + 1,
-                    amount * (float) Math.ceil(used / craftedAmount));
-        });
-
-        // If this is the first printTree call recursively
-        if (depth == 0){
-            IO.println("\nTotals: ");
-            // Go through the root material usage map to print out what has been used for this call
-            MaterialMaps.rootMaterialUsages.forEach((material, amount) ->{
-                if (amount > 0) {
-                    IO.println(material.getReadableName() + ", " + amount);
-                    // Reset root material usage in its map
-                    MaterialMaps.rootMaterialUsages.put(material, 0f);
-                }
-            });
-        }
-    }
-
-    @Override
     public String getTree(int depth, float used) {
         String tree = "";
 
