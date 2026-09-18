@@ -23,12 +23,12 @@ public class Main {
         Window window = new Window(iconsFolder);
 
         /*/ DEBUG
-        MaterialMaps.materials.forEach((id, material) ->{
+        com.axian.materials.MaterialMaps.materials.forEach((id, material) ->{
             IO.println(material.getId() + ", " + material.getClass());
         });
 
         IO.println("");
-        MaterialMaps.materials.get("stone_pickaxe").printTree();
+        com.axian.materials.MaterialMaps.materials.get("stone_pickaxe").printTree();
          /**/
 
     }
