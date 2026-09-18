@@ -19,3 +19,11 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+tasks.jar {
+    manifest {
+        attributes(mapOf("Main-Class" to "com.axian.Main"))
+    }
+
+    manifest.attributes(mapOf("Class-Path" to configurations))
+}
